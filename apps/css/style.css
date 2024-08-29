@@ -11,6 +11,7 @@ body{
     background-color: #1c1c1c;
     padding: 10px;
     margin: 10px;
+    border-radius: 5px;
 }
 
 #workspace {
@@ -25,4 +26,13 @@ body{
 canvas {
     height: 100%;
     width: 100%;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
 }

@@ -30,13 +30,19 @@ canvas.addEventListener('mouseup', stopDrawing);
 
 function startDrawing(event) {
     drawing = true;
+    const canvasRect = canvas.getBoundingClientRect();
+    const x = event.clientX - canvasRect.left;
+    const y = event.clientY - canvasRect.top;
     ctx.beginPath();
-    ctx.moveTo(event.offsetX, event.offsetY);
+    ctx.moveTo(x, y);
 }
 
 function draw(event) {
     if (!drawing) return;
-    ctx.lineTo(event.offsetX, event.offsetY);
+    const canvasRect = canvas.getBoundingClientRect();
+    const x = event.clientX - canvasRect.left;
+    const y = event.clientY - canvasRect.top;
+    ctx.lineTo(x, y);
     ctx.strokeStyle = `rgba(0, 0, 0, ${brushOpacity})`;
     ctx.lineWidth = brushSize;
     ctx.stroke();
