@@ -35,6 +35,11 @@ body{
     margin: 10px;
 }
 
+#layersList .selected {
+    background-color: #ccc;
+    color: #333;
+  }
+
 canvas {
     width: 800px;
     height: 400px;

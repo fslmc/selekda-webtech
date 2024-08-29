@@ -50,18 +50,32 @@ function stopDrawing() {
 let layers = [];
 let currentLayer = null;
 
-document.getElementById("newLayer").addEventListener('click', () => {
-    const layer = document.createElement('canvas');
-    layer.width = canvas.width;
-    layer.height = canvas.height;
+const layersList = document.getElementById('layersList');
 
-    layer.classList.add('layer');
-    layers.push(layer);
-    document.getElementById('layersList').appendChild(layer);
-    setCurrentLayer(layer);
-});
-
-function setCurrentLayer(layer) {
+function createLayerElement(layer) {
+  const layerElement = document.createElement('div');
+  layerElement.textContent = `Layer ${layer.id}`;
+  layerElement.addEventListener('click', () => {
     currentLayer = layer;
-    ctx = currentLayer.getContext('2d');
+    currentCtx = layer.getContext('2d');
+    layerElement.classList.add('selected');
+    Array.from(layersList.children).forEach((child) => {
+      if (child !== layerElement) {
+        child.classList.remove('selected');
+      }
+    });
+  });
+  return layerElement;
 }
+
+function addLayer() {
+  const newLayer = document.createElement('canvas');
+  newLayer.width = 800;
+  newLayer.height = 400;
+  const layerElement = createLayerElement(newLayer);
+  layersList.appendChild(layerElement);
+  currentLayer = newLayer;
+  currentCtx = newLayer.getContext('2d');
+}
+
+document.getElementById('newLayer').addEventListener('click', addLayer);
