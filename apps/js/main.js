@@ -12,8 +12,11 @@ window.addEventListener("mousemove", (e) =>{
 });
 
 let currentTool = 'brush';
-let brushSize = 10;
-let brushOpacity = 1;
+let brushSize = document.getElementById('brushSize').value;
+let brushOpacity = document.getElementById('brushOpacity').value;
+let trailOpacity = brushOpacity * 0.5; // Make the trail 50% of the brush opacity
+
+
 
 // Drawing state
 let drawing = false;
@@ -39,20 +42,42 @@ function startDrawing(event) {
     ctx.moveTo(event.offsetX, event.offsetY);
 }
 
-function draw(event) {
-  if (!drawing) return;
+// Add a range input element for brush size
+const brushSizeInput = document.getElementById('brushSize');
+brushSizeInput.addEventListener('input', () => {
+  brushSize = brushSizeInput.value;
+});
 
-  if (currentTool === 'brush') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = colorPicker.value;
-  } else if (currentTool === 'eraser') {
-    ctx.globalCompositeOperation = 'destination-out';
+// Add a range input element for brush opacity
+const brushOpacityInput = document.getElementById('brushOpacity');
+brushOpacityInput.addEventListener('input', () => {
+    brushOpacity = brushOpacityInput.value / 100;
+    document.getElementById('brushOpacityLabel').textContent = brushOpacityInput.value;
+  });
+
+  function draw(event) {
+    if (!drawing) return;
+  
+    if (currentTool === 'brush') {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = colorPicker.value;
+      ctx.globalAlpha = brushOpacity; // Use the selected brush opacity
+      ctx.lineWidth = brushSize;
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+  
+      // Draw the trail with the trail opacity
+      ctx.globalAlpha = trailOpacity;
+      ctx.moveTo(event.offsetX, event.offsetY);
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+    } else if (currentTool === 'eraser') {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineWidth = brushSize;
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+    }
   }
-
-  ctx.lineWidth = brushSize;
-  ctx.lineTo(event.offsetX, event.offsetY);
-  ctx.stroke();
-}
 
 function stopDrawing() {
     drawing = false;
