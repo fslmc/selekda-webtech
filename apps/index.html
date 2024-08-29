@@ -7,31 +7,31 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>hay</h1>
-    <div id="toolbar">
-        <button id="brushTool">Brush</button>
-        <button id="eraserTool">Eraser</button>
-        <button id="moveTool">Move</button>
-
-    </div>
-
-    <div id="propertiesBar">
-        <label for="brushSize">Brush Size:</label>
-        <input type="range" id="brushSize" min="1" max="100">
-        <label for="brushOpacity">Opacity:</label>
-        <input type="range" id="brushOpacity" min="0" max="100">
-
-    </div>
-
-    <div id="workspace">
-        <canvas id="canvas"></canvas>
-    </div>
-
-    <div id="layers">
-        <div id="layersList">
-
+    <div id="container">
+        <h1>hay</h1>
+        <div id="toolbar">
+            <button id="brushTool">Brush</button>
+            <button id="eraserTool">Eraser</button>
+            <button id="moveTool">Move</button>
         </div>
-        <button id="newLayer">Add Layer</button>
+
+        <div id="propertiesBar">
+            <label for="brushSize">Brush Size:</label>
+            <input type="range" id="brushSize" min="1" max="100">
+            <label for="brushOpacity">Opacity:</label>
+            <input type="range" id="brushOpacity" min="0" max="100">
+        </div>
+
+        <div id="workspace">
+            <canvas id="canvas" width="800" height="400"></canvas>
+        </div>
+
+        <div id="layers">
+            <div id="layersList">
+
+            </div>
+            <button id="newLayer">Add Layer</button>
+        </div>
     </div>
 
     <script src="js/main.js"></script>

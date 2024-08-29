@@ -1,11 +1,10 @@
+// basic drawing
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 canvas.width = 800;
 canvas.height = 400;
-
-// ctx.fillStyle = "red";
-// ctx.fillRect(0, 0, 800, 300);
 
 window.addEventListener("mousemove", (e) =>{
     console.log("Mouse X: ", e.clientX);
@@ -30,19 +29,13 @@ canvas.addEventListener('mouseup', stopDrawing);
 
 function startDrawing(event) {
     drawing = true;
-    const canvasRect = canvas.getBoundingClientRect();
-    const x = event.clientX - canvasRect.left;
-    const y = event.clientY - canvasRect.top;
     ctx.beginPath();
-    ctx.moveTo(x, y);
+    ctx.moveTo(event.offsetX, event.offsetY);
 }
 
 function draw(event) {
     if (!drawing) return;
-    const canvasRect = canvas.getBoundingClientRect();
-    const x = event.clientX - canvasRect.left;
-    const y = event.clientY - canvasRect.top;
-    ctx.lineTo(x, y);
+    ctx.lineTo(event.offsetX, event.offsetY);
     ctx.strokeStyle = `rgba(0, 0, 0, ${brushOpacity})`;
     ctx.lineWidth = brushSize;
     ctx.stroke();
@@ -51,4 +44,24 @@ function draw(event) {
 function stopDrawing() {
     drawing = false;
     ctx.closePath();
+}
+
+// Layer
+let layers = [];
+let currentLayer = null;
+
+document.getElementById("newLayer").addEventListener('click', () => {
+    const layer = document.createElement('canvas');
+    layer.width = canvas.width;
+    layer.height = canvas.height;
+
+    layer.classList.add('layer');
+    layers.push(layer);
+    document.getElementById('layersList').appendChild(layer);
+    setCurrentLayer(layer);
+});
+
+function setCurrentLayer(layer) {
+    currentLayer = layer;
+    ctx = currentLayer.getContext('2d');
 }
