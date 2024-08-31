@@ -6,10 +6,10 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 400;
 
-window.addEventListener("mousemove", (e) =>{
-    console.log("Mouse X: ", e.clientX);
-    console.log("Mouse Y: ", e.clientY);
-});
+// window.addEventListener("mousemove", (e) =>{
+//     console.log("Mouse X: ", e.clientX);
+//     console.log("Mouse Y: ", e.clientY);
+// });
 
 const brushShapeSelect = document.getElementById('brushShape');
 
@@ -39,6 +39,7 @@ document.getElementById('brushTool').addEventListener('click', () => {
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
 
 
 const brushSizeInput = document.getElementById('brushSize');
@@ -111,6 +112,114 @@ document.getElementById('eraserTool').addEventListener('click', () => {
     currentTool = 'eraser';
 });
 
+// Move Tool
+const moveTool = document.getElementById('moveTool');
+moveTool.addEventListener('click', () => {
+  currentTool = 'move';
+});
+
+// Move tool properties
+const moveToolProperties = document.getElementById('moveToolProperties');
+moveToolProperties.style.display = 'none';
+
+moveTool.addEventListener('click', () => {
+  moveToolProperties.style.display = 'block';
+});
+
+// Rotate clockwise
+const rotateClockwiseButton = document.getElementById('rotateClockwiseButton');
+rotateClockwiseButton.addEventListener('click', () => {
+  // Get the current layer
+  const currentLayer = ctx;
+  // Get the current layer's canvas
+  const currentLayerCanvas = currentLayer.canvas;
+  // Rotate the canvas clockwise
+  currentLayerCanvas.style.transform = 'rotate(90deg)';
+});
+
+// Rotate counter clockwise
+const rotateCounterClockwiseButton = document.getElementById('rotateCounterClockwiseButton');
+rotateCounterClockwiseButton.addEventListener('click', () => {
+  // Get the current layer
+  const currentLayer = ctx;
+  // Get the current layer's canvas
+  const currentLayerCanvas = currentLayer.canvas;
+  // Rotate the canvas counter clockwise
+  currentLayerCanvas.style.transform = 'rotate(-90deg)';
+});
+
+// Flip horizontal
+const flipHorizontalButton = document.getElementById('flipHorizontalButton');
+flipHorizontalButton.addEventListener('click', () => {
+  // Get the current layer
+  const currentLayer = ctx;
+  // Get the current layer's canvas
+  const currentLayerCanvas = currentLayer.canvas;
+  // Flip the canvas horizontally
+  currentLayerCanvas.style.transform = 'scaleX(-1)';
+});
+
+// Flip vertical
+const flipVerticalButton = document.getElementById('flipVerticalButton');
+flipVerticalButton.addEventListener('click', () => {
+  // Get the current layer
+  const currentLayer = ctx;
+  // Get the current layer's canvas
+  const currentLayerCanvas = currentLayer.canvas;
+  // Flip the canvas vertically
+  currentLayerCanvas.style.transform = 'scaleY(-1)';
+});
+
+// Move tool functionality
+let startX, startY, endX, endY;
+let isDragging = false;
+let selectionRect;
+
+canvas.addEventListener('mousedown', (event) => {
+    if (currentTool === 'move') {
+      startX = event.clientX;
+      startY = event.clientY;
+      isDragging = true;
+    }
+  });
+
+
+
+canvas.addEventListener('mousemove', (event) => {
+  if (currentTool === 'move' && isDragging) {
+    endX = event.clientX;
+    endY = event.clientY;
+    // Update the selection rectangle
+    selectionRect = {
+      x: Math.min(startX, endX),
+      y: Math.min(startY, endY),
+      width: Math.abs(endX - startX),
+      height: Math.abs(endY - startY)
+    };
+    // Draw the selection rectangle (optional)
+    ctx.strokeStyle = 'blue';
+    ctx.strokeRect(selectionRect.x, selectionRect.y, selectionRect.width, selectionRect.height);
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  if (currentTool === 'move' && isDragging) {
+    isDragging = false;
+    // Get the selected region's coordinates
+    const selectedRegion = selectionRect;
+    // Move the selected region (TO DO: implement this part)
+    // ...
+  }
+});
+canvas.addEventListener('mousedown', (event) => {
+    if (currentTool === 'move' && selectionRect) {
+      // Get the mouse position
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+      // Move the selected region to the new position
+      // ...
+    }
+  });
 // layer
 // function updateLayerList() {
 //     layersList.innerHTML = '';
